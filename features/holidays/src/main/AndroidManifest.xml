@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mili.features.holidays">
+
+    <application>
+        <activity
+            android:name=".HolidayActivity"
+            android:exported="false"
+            android:screenOrientation="fullSensor"
+            />
+    </application>
+
+</manifest>
