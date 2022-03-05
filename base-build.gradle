@@ -1,22 +1,26 @@
 apply plugin: 'kotlin-kapt'
-
+apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: "androidx.navigation.safeargs"
 buildscript {
     repositories {
         mavenCentral()
-        maven { url = uri("https://plugins.gradle.org/m2/") }
+        maven { url = "https://plugins.gradle.org/m2/" }
     }
 }
 
 android {
-    compileSdk Config.compileSdkVersion
+    compileSdkVersion Config.compileSdkVersion
 
     defaultConfig {
-        minSdk (Config.minSdkVersion)
-        targetSdk Config.targetSdkVersion
+        minSdkVersion(Config.minSdkVersion)
+        targetSdkVersion(Config.targetSdkVersion)
         versionCode Config.versionCode
         versionName Config.versionName
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        def calendarApiKey = properties.getProperty('calendarapikey')
+        buildConfigField 'String', 'API_KEY', "\"$calendarApiKey\""
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -27,7 +31,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
     compileOptions {
@@ -35,11 +39,12 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "1.8"
     }
 }
 
- dependencies {
-     implementation 'com.google.dagger:dagger:2.40.5'
-     kapt 'com.google.dagger:dagger-compiler:2.40.5'
- }
+dependencies {
+    implementation "com.google.dagger:hilt-android:2.38.1"
+    kapt "com.google.dagger:hilt-compiler:2.38.1"
+    //kapt "com.google.dagger:hilt-android-compiler:2.38.1"
+}

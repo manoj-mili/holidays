@@ -1,12 +1,17 @@
 package com.mili.features.holidays.domain.models
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class HolidayDomainModel(
-    private val holidayId: Int,
-    private val holidayName: String,
-    private val holidayDate: String,
-    private val holidayDay: String,
-    private val isNationalHoliday: Boolean,
-    private val isLongWeekend: Boolean,
-    private val country: String
-) {
-}
+    val holidayId: Int,
+    val holidayName: String,
+    val holidayDate: String,
+    val holidayDay: String,
+    val isNationalHoliday: Boolean,
+    val isLongWeekend: Boolean,
+    val country: String,
+    val description: String,
+    val types:List<String>
+):Parcelable

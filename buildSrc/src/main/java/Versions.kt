@@ -14,5 +14,5 @@ object Versions {
     const val moshiConverter = "2.9.0"
     const val kotlinCoroutines = "1.6.0"
     const val navVersion = "2.3.5"
-
+    const val roomVersion = "2.4.1"
 }

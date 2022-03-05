@@ -1,14 +1,12 @@
 package com.mili.features.holidays.domain.repo
 
-import com.mili.features.holidays.domain.models.HolidayCountryDomainModel
-import com.mili.features.holidays.domain.models.HolidayDaysDomainModel
+import com.mili.core.network.Resource
 import com.mili.features.holidays.domain.models.HolidayDomainModel
+import kotlinx.coroutines.flow.Flow
+import org.json.JSONObject
 
 interface IHolidaysRepository {
 
-    suspend fun getHolidaysForCountry(country:String):List<HolidayDomainModel>
+    suspend fun getHolidaysForCountry(countryCode:String): Flow<Resource<List<HolidayDomainModel>>>
 
-    suspend fun getCountryList():List<HolidayCountryDomainModel>
-
-    suspend fun getDayList():List<HolidayDaysDomainModel>
 }

@@ -1,26 +1,33 @@
 package com.mili.features.holidays.data
 
-import com.mili.features.holidays.di.HolidayFeatureScope
-import com.mili.features.holidays.domain.models.HolidayCountryDomainModel
-import com.mili.features.holidays.domain.models.HolidayDaysDomainModel
-import com.mili.features.holidays.domain.models.HolidayDomainModel
+import com.mili.core.utils.networkBoundResource
+import com.mili.features.holidays.data.local.HolidayDao
+import com.mili.features.holidays.data.remote.HolidayAPI
 import com.mili.features.holidays.domain.repo.IHolidaysRepository
+import com.mili.holidays.core.DispatcherProvider
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-@HolidayFeatureScope
 class HolidaysRepository @Inject constructor(
     private val holidayAPI: HolidayAPI,
-    private val mapper: HolidayMapper
+    private val holidayDao: HolidayDao,
+    private val dispatcherProvider: DispatcherProvider,
 ) : IHolidaysRepository {
-    override suspend fun getHolidaysForCountry(country: String): List<HolidayDomainModel> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getCountryList(): List<HolidayCountryDomainModel> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getDayList(): List<HolidayDaysDomainModel> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getHolidaysForCountry(countryCode: String) = networkBoundResource(
+        query = {
+            holidayDao.getHolidayForCountry(countryCode).map {
+                it.mapEntityToDomain()
+            }
+        },
+        shouldFetch = {
+            it.isEmpty()
+        },
+        fetch = {
+            holidayAPI.getHolidays(countryCode, 2022)
+        },
+        saveFetchResult = {
+            holidayDao.saveHolidays(it.mapResponseToEntity(countryCode))
+        },
+        clearData = {}
+    )
 }

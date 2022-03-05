@@ -2,14 +2,16 @@ apply (from = rootProject.file("base-build.gradle"))
 plugins {
     id("com.android.library")
     id("kotlin-android")
+    id ("dagger.hilt.android.plugin")
+    id ("kotlin-parcelize")
 }
 
 addCoreUI()
 addJetPackNavigation()
-addRetrofit()
-
 dependencies {
-
     implementation(project(mapOf("path" to ":core")))
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:${Versions.roomVersion}")
+    implementation("io.coil-kt:coil:1.4.0")
+    add(kapt, Dependencies.moshiKapt)
 }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/holidayListFragment"
-        android:name="com.mili.features.holidays.HolidayListFragment"
+        android:name="com.mili.features.holidays.presentation.HolidayListFragment"
         android:label="fragment_holiday_list"
         tools:layout="@layout/fragment_holiday_list" >
         <action
@@ -16,7 +16,11 @@
     </fragment>
     <fragment
         android:id="@+id/holidayDetailsFragment"
-        android:name="com.mili.features.holidays.HolidayDetailsFragment"
+        android:name="com.mili.features.holidays.presentation.HolidayDetailsFragment"
         android:label="fragment_holiday_details"
-        tools:layout="@layout/fragment_holiday_details" />
+        tools:layout="@layout/fragment_holiday_details" >
+        <argument
+            android:name="selectedHoliday"
+            app:argType="com.mili.features.holidays.domain.models.HolidayDomainModel" />
+    </fragment>
 </navigation>

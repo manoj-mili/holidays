@@ -3,6 +3,8 @@ import org.gradle.kotlin.dsl.dependencies
 
 
 const val implementation = "implementation"
+const val api = "api"
+const val testImplementation = "testImplementation"
 const val kapt = "kapt"
 
 /**
@@ -40,6 +42,8 @@ object Dependencies {
     val kotlinCoroutines by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}" }
     val navFragment by lazy { "androidx.navigation:navigation-fragment-ktx:${Versions.navVersion}" }
     val navUI by lazy { "androidx.navigation:navigation-ui-ktx:${Versions.navVersion}" }
+
+    val recyclerView by lazy { "androidx.recyclerview:recyclerview:1.2.1" }
 }
 
 fun Project.addJetPackNavigation() {
@@ -63,7 +67,7 @@ fun Project.addCoreUI() {
         add(implementation, Dependencies.appCompat)
         add(implementation, Dependencies.constraintLayout)
         add(implementation, Dependencies.materialDesign)
-        implementation("androidx.recyclerview:recyclerview:1.2.1")
+        add(implementation, Dependencies.recyclerView)
     }
 }
 
@@ -71,35 +75,51 @@ fun Project.addViewModel() {
     val lifecycleVersion = "2.5.0-alpha02"
     dependencies {
         // ViewModel
-        implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+        api("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
         // LiveData
-        implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
+        api("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
 
         // Saved state module for ViewModel
-        implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion")
+        api("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion")
 
-        // Annotation processor
-        kapt("androidx.lifecycle:lifecycle-compiler:$lifecycleVersion")
-        // alternately - if using Java8, use the following instead of lifecycle-compiler
-        implementation("androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion")
+//        // Annotation processor
+//        kapt("androidx.lifecycle:lifecycle-compiler:$lifecycleVersion")
+//        // alternately - if using Java8, use the following instead of lifecycle-compiler
+//        implementation("androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion")
     }
+}
+
+fun Project.addAndroidRoom() {
+    dependencies {
+
+        api("androidx.room:room-runtime:${Versions.roomVersion}")
+
+        // optional - Kotlin Extensions and Coroutines support for Room
+        api("androidx.room:room-ktx:${Versions.roomVersion}")
+
+        // optional - Test helpers
+        testImplementation("androidx.room:room-testing:${Versions.roomVersion}")
+
+        // optional - Paging 3 Integration
+        implementation("androidx.room:room-paging:${Versions.roomVersion}")
+    }
+
 }
 
 fun Project.addRetrofit() {
 
     dependencies {
-        add(implementation, Dependencies.retrofit2)
-        add(implementation, Dependencies.okhttp)
-        add(implementation, Dependencies.okhttpLogger)
-        add(implementation, Dependencies.moshiRetrofitConverter)
-        add(implementation, Dependencies.moshi)
-        add(kapt, Dependencies.moshiKapt)
+        add(api, Dependencies.retrofit2)
+        add(api, Dependencies.okhttp)
+        add(api, Dependencies.okhttpLogger)
+        add(api, Dependencies.moshiRetrofitConverter)
+        add(api, Dependencies.moshi)
     }
 }
 
 fun Project.addKotlinCoroutines() {
     dependencies {
-        implementation(Dependencies.kotlinCoroutines)
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+        api(Dependencies.kotlinCoroutines)
+        api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
     }
 }

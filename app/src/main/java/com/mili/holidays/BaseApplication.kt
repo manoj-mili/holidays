@@ -1,25 +1,19 @@
 package com.mili.holidays
 
 import android.app.Application
-import com.mili.core.CoreComponent
-import com.mili.core.CoreComponentProvider
-import com.mili.core.DaggerCoreComponent
-import retrofit2.Retrofit
-import javax.inject.Inject
+import com.mili.features.countries.CountryModuleAppInstance
+import com.mili.holidays.appdelegates.CountryModuleAppDelegate
+import dagger.hilt.android.HiltAndroidApp
 
-class BaseApplication : Application(), CoreComponentProvider {
-
-    @Inject
-    lateinit var retrofit: Retrofit
-    private lateinit var coreComponent: CoreComponent
+@HiltAndroidApp
+class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        coreComponent = DaggerCoreComponent.factory().create()
-        DaggerAppComponent.factory().create(this, coreComponent).inject(this)
+        setUpAppDelegates()
     }
 
-    override fun provideCoreComponent(): CoreComponent {
-        return coreComponent
+    private fun setUpAppDelegates() {
+        CountryModuleAppInstance.countryModuleAppDelegate = CountryModuleAppDelegate()
     }
 }

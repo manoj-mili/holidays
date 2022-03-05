@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Global Holidays"
 include(":app",":core",":features:holidays")
+include(":features:countries")
